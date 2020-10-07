@@ -61,8 +61,8 @@ module.exports = {
   subscribeToInterstitialCallbacks: (callback: Function) => {
     INTERSTITIAL_CALLBACKS.map((event) => {
       emitter.removeAllListeners(event);
-      emitter.addListener(event, () => {
-        callback(event);
+      emitter.addListener(event, (body) => {
+        callback(event, body.placement);
       });
     });
   },
@@ -74,13 +74,13 @@ module.exports = {
   subscribeToRewardCallbacks: (callback: Function) => {
     REWARD_CALLBACKS_NONFINISHED.map((event) => {
       emitter.removeAllListeners(event);
-      emitter.addListener(event, () => {
-        callback(event);
+      emitter.addListener(event, (body) => {
+        callback(event, body.placement);
       });
     });
     emitter.removeAllListeners(REWARD_CALLBACK_FINISHED);
     emitter.addListener(REWARD_CALLBACK_FINISHED, (body) => {
-      callback(REWARD_CALLBACK_FINISHED, body.rewardName, body.rewardAmount)
+      callback(REWARD_CALLBACK_FINISHED, body.placement, body.rewardName, body.rewardAmount)
     });
   },
   unsubscribeFromRewardCallbacks: () => {
