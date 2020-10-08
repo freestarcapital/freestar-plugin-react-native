@@ -11,8 +11,11 @@
 
 @interface FreestarReactBridge () <FreestarInterstitialDelegate, FreestarRewardedDelegate>
 
-@property FreestarInterstitialAd *interstitial;
-@property FreestarRewardedAd *reward;
+@property NSMutableDictionary<NSString*,FreestarInterstitialAd*> *interstitialAds;
+@property NSMutableDictionary<NSString*,FreestarRewardedAd*> *rewardAds;
+
+//@property FreestarInterstitialAd *interstitial;
+//@property FreestarRewardedAd *reward;
 
 @end
 
@@ -35,6 +38,8 @@ RCT_EXPORT_MODULE();
 #pragma mark - init
 
 RCT_EXPORT_METHOD(initWithAdUnitID:(NSString *)apiKey) {
+    self.interstitialAds = [NSMutableDictionary dictionary];
+    self.rewardAds = [NSMutableDictionary dictionary];
     [Freestar initWithAdUnitID:apiKey];
 }
 
@@ -128,46 +133,55 @@ RCT_EXPORT_METHOD(subjectToGDPR:(BOOL)gdprApplies withConsent:(NSString *)gdprCo
 #pragma mark - launching interstitial
 
 RCT_EXPORT_METHOD(loadInterstitialAd:(NSString *)placement) {
-  self.interstitial = [[FreestarInterstitialAd alloc] initWithDelegate:self];
-  [self.interstitial loadPlacement:placement];
+    FreestarInterstitialAd *ad = [[FreestarInterstitialAd alloc] initWithDelegate:self];
+    
+    NSString *placementKey = placement ? placement : @"";
+    
+    self.interstitialAds[placementKey] = ad;
+    [ad loadPlacement:placement];
 }
 
-RCT_EXPORT_METHOD(showInterstitialAd) {
-    [self.interstitial showFrom:[self visibleViewController:[UIApplication sharedApplication].keyWindow.rootViewController]];
+RCT_EXPORT_METHOD(showInterstitialAd:(NSString *)placement) {
+    NSString *placementKey = placement ? placement : @"";
+    [self.interstitialAds[placementKey] showFrom:[self visibleViewController:[UIApplication sharedApplication].keyWindow.rootViewController]];
 }
 
 #pragma mark - Interstitial delegate
 
 -(void)freestarInterstitialLoaded:(FreestarInterstitialAd *)ad {
-  [self sendEventWithName:@"onInterstitialLoaded" body:nil];
+    [self sendEventWithName:@"onInterstitialLoaded" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarInterstitialFailed:(FreestarInterstitialAd *)ad because:(FreestarNoAdReason)reason {
-  [self sendEventWithName:@"onInterstitialFailed" body:nil];
+    [self sendEventWithName:@"onInterstitialFailed" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarInterstitialShown:(FreestarInterstitialAd *)ad {
-  [self sendEventWithName:@"onInterstitialShown" body:nil];
+    [self sendEventWithName:@"onInterstitialShown" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarInterstitialClicked:(FreestarInterstitialAd *)ad {
-  [self sendEventWithName:@"onInterstitialClicked" body:nil];
+    [self sendEventWithName:@"onInterstitialClicked" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarInterstitialClosed:(FreestarInterstitialAd *)ad {
-  [self sendEventWithName:@"onInterstitialDismissed" body:nil];
+    [self sendEventWithName:@"onInterstitialDismissed" body:@{@"placement": ad.placement}];
 }
 
 
 #pragma mark - launching reward
 
 RCT_EXPORT_METHOD(loadRewardAd:(NSString *)placement) {
-  
-  self.reward = [[FreestarRewardedAd alloc] initWithDelegate:self andReward:[FreestarReward blankReward]];
-  [self.reward loadPlacement:placement];
+    FreestarRewardedAd *ad = [[FreestarRewardedAd alloc] initWithDelegate:self andReward:[FreestarReward blankReward]];
+    
+    NSString *placementKey = placement ? placement : @"";
+    
+    self.rewardAds[placementKey] = ad;
+    [ad loadPlacement:placement];
 }
 
-RCT_EXPORT_METHOD(showRewardAd:(NSString *)rewardName
+RCT_EXPORT_METHOD(showRewardAd:(NSString *)placement
+                  rewardName:(NSString *)rewardName
                   amount:(NSInteger)rewardAmount
                   userID:(NSString *)userID
                   secretKey:(NSString *)secretKey) {
@@ -177,36 +191,40 @@ RCT_EXPORT_METHOD(showRewardAd:(NSString *)rewardName
   rew.rewardAmount = rewardAmount;
   rew.userID = userID;
   rew.secretKey = secretKey;
-  self.reward.reward = rew;
-  [self.reward showFrom:[self visibleViewController:[UIApplication sharedApplication].keyWindow.rootViewController]];
+    
+    NSString *placementKey = placement ? placement : @"";
+    
+    self.rewardAds[placementKey].reward = rew;
+    [self.rewardAds[placementKey] showFrom:[self visibleViewController:[UIApplication sharedApplication].keyWindow.rootViewController]];
 }
 
 #pragma mark - Reward delegate
 
 -(void)freestarRewardedLoaded:(FreestarRewardedAd *)ad {
-  [self sendEventWithName:@"onRewardedLoaded" body:nil];
+    [self sendEventWithName:@"onRewardedLoaded" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarRewardedFailed:(FreestarRewardedAd *)ad because:(FreestarNoAdReason)reason {
-  [self sendEventWithName:@"onRewardedFailed" body:nil];
+    [self sendEventWithName:@"onRewardedFailed" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarRewardedShown:(FreestarRewardedAd *)ad {
-  [self sendEventWithName:@"onRewardedShown" body:nil];
+    [self sendEventWithName:@"onRewardedShown" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarRewardedClosed:(FreestarRewardedAd *)ad {
-  [self sendEventWithName:@"onRewardedDismissed" body:nil];
+    [self sendEventWithName:@"onRewardedDismissed" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarRewardedFailedToStart:(FreestarRewardedAd *)ad because:(FreestarNoAdReason)reason {
-  [self sendEventWithName:@"onRewardedShowFailed" body:nil];
+    [self sendEventWithName:@"onRewardedShowFailed" body:@{@"placement": ad.placement}];
 }
 
 -(void)freestarRewardedAd:(FreestarRewardedAd *)ad received:(NSString *)rewardName amount:(NSInteger)rewardAmount {
   [self sendEventWithName:@"onRewardedCompleted"
   body:@{@"rewardName" : rewardName,
-         @"rewardAmount" : @(rewardAmount)
+         @"rewardAmount" : @(rewardAmount),
+         @"placement" : ad.placement
          }];
 }
 

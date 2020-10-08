@@ -45,7 +45,9 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
         }];
     }
     
-    [self loadPlacement:nil];
+    NSString *placement = options[@"placement"];
+    
+    [self loadPlacement:placement];
 }
 
 -(void)resetToSize {
