@@ -1,11 +1,9 @@
-"# freestar-plugin-react-native" 
+# Freestar React Native Plugin
 
 Freestar Plugin for React Native
+### Install
 
-Pertains to both iOS and Android mobile apps written in React Native
+```sh
+npm install --save @freestar/freestar-plugin-react-native
+```
 
-cd freestar-plugin-react-native
-
-//bump up the version within package.json
-
-npm publish

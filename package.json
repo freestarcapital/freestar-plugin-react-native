@@ -34,24 +34,27 @@
     "BannerAd.js",
     "freestar-plugin-react.podspec"
   ],
-
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
-  },
   "main": "FreestarReact.js",
-  "name": "freestar-plugin-react-native",
+  "name": "@freestar/freestar-plugin-react-native",
   "description": "A plugin to enable Freestar ads to be displayed in ReactNative apps",
-  "version": "1.1.4",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "Freestar",
     "Ads",
     "ReactNative"
   ],
-  "author": "Freestar",
+  "version": "1.1.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
+  },
+  "bugs": {
+    "url": "https://github.com/freestarcapital/freestar-plugin-react-native/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
   "license": "Apache-2.0",
-  "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native"
+  "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
 }
