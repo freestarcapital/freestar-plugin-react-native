@@ -1,5 +1,5 @@
 {
-  "_from": "freestar-plugin-react",
+  "_from": "freestar-plugin-react-native",
   "_inBundle": false,
   "_integrity": "sha512-0NPp+ZQNbY5NcQitoXGn+BdxzNgJsTelRCbDO8pFcL8Q/7CErZkSxKVffvk2YdWrNf+jKc4qtzZQcT+bXYfVdQ==",
   "_location": "/freestar-plugin-react-native",
@@ -18,7 +18,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/freestar-plugin-react/-/freestar-plugin-react-1.1.4.tgz",
+  "_resolved": "https://registry.npmjs.org/freestar-plugin-react/-/freestar-plugin-react-1.1.5.tgz",
   "_shasum": "7e4600ee435924c5c6c62413a5822d98357a430b",
   "_spec": "freestar-plugin-react-native",
   "deprecated": false,

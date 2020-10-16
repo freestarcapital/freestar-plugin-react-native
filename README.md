@@ -1,6 +1,9 @@
-# Freestar React Native Plugin
+# How to integrate Freestar Mediation Ads into your React Native mobile app
 
-Freestar Plugin for React Native
+iOS:      https://github.com/freestarcapital/SDK_documentation_ios/wiki
+
+Android:  https://github.com/freestarcapital/SDK_documentation_Android/wiki
+
 ### Install
 
 ```sh
