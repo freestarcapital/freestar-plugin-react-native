@@ -22,8 +22,8 @@
   "_shasum": "7e4600ee435924c5c6c62413a5822d98357a430b",
   "_spec": "freestar-plugin-react-native",
   "deprecated": false,
-
   "devDependencies": {
+    "np": "^6.5.0",
     "react-native": "^0.62.2"
   },
   "dummy": 4,
@@ -54,7 +54,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-
   "license": "Apache-2.0",
   "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native"
 }
