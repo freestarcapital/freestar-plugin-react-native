@@ -103,3 +103,4 @@ module.exports = {
 };
 
 export { default as BannerAd } from './BannerAd';
+export { default as MrecBannerAd } from './MrecBannerAd';
