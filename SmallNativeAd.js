@@ -3,14 +3,14 @@ import { requireNativeComponent, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 
 var viewProps = {
-   name: 'MrecBannerAd',
+   name: 'SmallNativeAd',
    propTypes: {
       ...ViewPropTypes,
       requestOptions: PropTypes.object.require,
-      onBannerAdLoaded: PropTypes.func,
-      onBannerAdFailedToLoad: PropTypes.func,
-      onBannerAdClicked: PropTypes.func,
+      onNativeAdLoaded: PropTypes.func,
+      onNativeAdFailedToLoad: PropTypes.func,
+      onNativeAdClicked: PropTypes.func,
    }
 
 }
-module.exports = requireNativeComponent('MrecBannerAd', viewProps);
+module.exports = requireNativeComponent('SmallNativeAd', viewProps);
