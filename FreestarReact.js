@@ -103,4 +103,18 @@ module.exports = {
 };
 
 export { default as BannerAd } from './BannerAd';
+
 export { default as MrecBannerAd } from './MrecBannerAd';
+export { default as MrecBannerAd2 } from './MrecBannerAd2';
+export { default as MrecBannerAd3 } from './MrecBannerAd3';
+export { default as MrecBannerAd4 } from './MrecBannerAd4';
+
+export { default as SmallNativeAd } from './SmallNativeAd';
+export { default as SmallNativeAd2 } from './SmallNativeAd2';
+export { default as SmallNativeAd3 } from './SmallNativeAd3';
+export { default as SmallNativeAd4 } from './SmallNativeAd4';
+
+export { default as MediumNativeAd } from './MediumNativeAd';
+export { default as MediumNativeAd2 } from './MediumNativeAd2';
+export { default as MediumNativeAd3 } from './MediumNativeAd3';
+export { default as MediumNativeAd4 } from './MediumNativeAd4';
