@@ -8,10 +8,6 @@
 #import "FreestarBannerAdViewManager.h"
 @import FreestarAds;
 
-//@interface FreestarBannerAd (ReactBridge)
-//-(void)setRequestOptions:(NSDictionary *)options;
-//@end
-
 static NSString* EVENT_AD_LOADED = @"onBannerAdLoaded";
 static NSString* EVENT_AD_FAILED_TO_LOAD = @"onBannerAdFailedToLoad";
 static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
