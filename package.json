@@ -29,25 +29,20 @@
   "dummy": 4,
   "files": [
     "ios",
-
     "FreestarReact.js",
     "BannerAd.js",
-
     "MrecBannerAd.js",
     "MrecBannerAd2.js",
     "MrecBannerAd3.js",
     "MrecBannerAd4.js",
-
     "SmallNativeAd.js",
     "SmallNativeAd2.js",
     "SmallNativeAd3.js",
     "SmallNativeAd4.js",
-
     "MediumNativeAd.js",
     "MediumNativeAd2.js",
     "MediumNativeAd3.js",
     "MediumNativeAd4.js",
-
     "freestar-plugin-react.podspec"
   ],
   "main": "FreestarReact.js",
@@ -59,7 +54,7 @@
     "Ads",
     "ReactNative"
   ],
-  "version": "1.1.9",
+  "version": "1.2.0-beta.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
@@ -71,5 +66,8 @@
     "test": "echo \"No test specified\""
   },
   "license": "Apache-2.0",
-  "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native"
+  "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native",
+  "author": {
+    "name": "Freestar"
+  }
 }
