@@ -24,7 +24,6 @@ static NSString* NATIVE_EVENT_AD_CLICKED = @"onNativeAdClicked";
 @implementation FreestarNativeAd (ReactBridge)
 
 -(void)setRequestOptions:(NSDictionary *)options {
-    NSLog(@"xxx 3");
     NSDictionary *targetingParams = options[@"targetingParams"];
     if(targetingParams && targetingParams.count > 0) {
         [targetingParams enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString* obj, BOOL * _Nonnull stop) {
@@ -58,7 +57,6 @@ static NSString* NATIVE_EVENT_AD_CLICKED = @"onNativeAdClicked";
 }
 
 - (UIView *)view {
-    NSLog(@"xxx 1");
     self.ad = [[FreestarNativeAd alloc] initWithDelegate:self andSize:[self adSize]];
     return self.ad;
 }
