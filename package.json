@@ -43,7 +43,7 @@
     "MediumNativeAd2.js",
     "MediumNativeAd3.js",
     "MediumNativeAd4.js",
-    "freestar-plugin-react.podspec"
+    "freestar-plugin-react-native.podspec"
   ],
   "main": "FreestarReact.js",
   "name": "@freestar/freestar-plugin-react-native",
@@ -54,7 +54,7 @@
     "Ads",
     "ReactNative"
   ],
-  "version": "1.2.0-beta.1",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
