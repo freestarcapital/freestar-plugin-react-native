@@ -40,7 +40,7 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(initWithAdUnitID:(NSString *)apiKey) {
     self.interstitialAds = [NSMutableDictionary dictionary];
     self.rewardAds = [NSMutableDictionary dictionary];
-    [Freestar initWithAdUnitID:apiKey];
+    [Freestar initWithAppKey:apiKey];
 }
 
 #pragma mark - targeting

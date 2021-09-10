@@ -50,6 +50,7 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
     CGRect newFrame;
     switch(self.size){
         case FreestarBanner320x50:
+            self.ad.fixedSize = true;
             newFrame = CGRectMake(0, 0, 320, 50);
             break;
         case FreestarBanner728x90:
