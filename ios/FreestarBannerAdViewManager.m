@@ -50,7 +50,6 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
     CGRect newFrame;
     switch(self.size){
         case FreestarBanner320x50:
-            self.ad.fixedSize = true;
             newFrame = CGRectMake(0, 0, 320, 50);
             break;
         case FreestarBanner728x90:
@@ -98,6 +97,7 @@ RCT_EXPORT_VIEW_PROPERTY(onBannerAdLoaded, RCTBubblingEventBlock);
 
 - (UIView *)view {
     self.ad = [[FreestarBannerAd alloc] initWithDelegate:self andSize:FreestarBanner300x250];
+    self.ad.fixedSize = true;
     return self.ad;
 }
 
