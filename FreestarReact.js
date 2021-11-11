@@ -45,8 +45,6 @@ module.exports = {
     storeURL: string,
     category: string
   ) => FreestarReactBridge.setAppInfo(appName,publisherName,appDomain,publisherDomain,storeURL,category),
-  subjectToGDPR: (gdprApplies: boolean, gdprConsentString: string) =>
-    FreestarReactBridge.subjectToGDPR(gdprApplies,gdprConsentString),
   setCoppaStatus: (coppa: boolean) => FreestarReactBridge.setCoppaStatus(coppa),
   loadInterstitialAd: (placement: string) => FreestarReactBridge.loadInterstitialAd(placement),
   showInterstitialAd: (placement: string) => FreestarReactBridge.showInterstitialAd(placement),

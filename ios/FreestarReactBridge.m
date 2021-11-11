@@ -107,13 +107,6 @@ RCT_EXPORT_METHOD(setLocation:(NSString *)dmaCode
 
 
 
-#pragma mark - privacy
-
-RCT_EXPORT_METHOD(subjectToGDPR:(BOOL)gdprApplies withConsent:(NSString *)gdprConsentString) {
-    FreestarPrivacySettings *priv = [Freestar privacySettings];
-    [priv subjectToGDPR:gdprApplies withConsent:gdprConsentString];
-}
-
 #pragma mark - events
 
 - (NSArray<NSString *> *)supportedEvents{
