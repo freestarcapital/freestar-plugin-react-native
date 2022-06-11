@@ -64,6 +64,14 @@ module.exports = {
       });
     });
   },
+ subscribeToInterstitialCallbacks2: (callback: Function) => {
+   INTERSTITIAL_CALLBACKS.map((event) => {
+     emitter.removeAllListeners(event);
+     emitter.addListener(event, (body) => {
+       callback(event, body.placement, body);
+     });
+   });
+ },
   unsubscribeFromInterstitialCallbacks: () => {
     INTERSTITIAL_CALLBACKS.map((event) => {
       emitter.removeAllListeners(event);
@@ -74,6 +82,18 @@ module.exports = {
       emitter.removeAllListeners(event);
       emitter.addListener(event, (body) => {
         callback(event, body.placement);
+      });
+    });
+    emitter.removeAllListeners(REWARD_CALLBACK_FINISHED);
+    emitter.addListener(REWARD_CALLBACK_FINISHED, (body) => {
+      callback(REWARD_CALLBACK_FINISHED, body.placement, body.rewardName, body.rewardAmount)
+    });
+  },
+  subscribeToRewardCallbacks2: (callback: Function) => {
+    REWARD_CALLBACKS_NONFINISHED.map((event) => {
+      emitter.removeAllListeners(event);
+      emitter.addListener(event, (body) => {
+        callback(event, body.placement, body);
       });
     });
     emitter.removeAllListeners(REWARD_CALLBACK_FINISHED);
