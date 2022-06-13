@@ -93,12 +93,12 @@ module.exports = {
     REWARD_CALLBACKS_NONFINISHED.map((event) => {
       emitter.removeAllListeners(event);
       emitter.addListener(event, (body) => {
-        callback(event, body.placement, body);
+        callback(event, body.placement, body.rewardName, body.rewardAmount, body);
       });
     });
     emitter.removeAllListeners(REWARD_CALLBACK_FINISHED);
     emitter.addListener(REWARD_CALLBACK_FINISHED, (body) => {
-      callback(REWARD_CALLBACK_FINISHED, body.placement, body.rewardName, body.rewardAmount)
+      callback(REWARD_CALLBACK_FINISHED, body.placement, body.rewardName, body.rewardAmount, body)
     });
   },
   unsubscribeFromRewardCallbacks: () => {
