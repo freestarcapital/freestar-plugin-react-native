@@ -20,8 +20,15 @@ const REWARD_CALLBACKS_NONFINISHED = [
   "onRewardedShown",
   "onRewardedDismissed"];
 const REWARD_CALLBACK_FINISHED = "onRewardedCompleted";
+const THUMBNAIL_AD_CALLBACKS = [
+  "onThumbnailAdLoaded",
+  "onThumbnailAdClicked",
+  "onThumbnailAdShown",
+  "onThumbnailAdFailed",
+  "onThumbnailAdDismissed"];
 
 module.exports = {
+  enablePartnerChooserForTesting: (enable: boolean) => FreestarReactBridge.enablePartnerChooserForTesting(enable),
   initWithAdUnitID: (apiKey: string) => FreestarReactBridge.initWithAdUnitID(apiKey),
   setDemographics: (
     age: int,
@@ -46,6 +53,8 @@ module.exports = {
     category: string
   ) => FreestarReactBridge.setAppInfo(appName,publisherName,appDomain,publisherDomain,storeURL,category),
   setCoppaStatus: (coppa: boolean) => FreestarReactBridge.setCoppaStatus(coppa),
+  loadThumbnailAd: (placement: string) => FreestarReactBridge.loadThumbnailAd(placement),
+  showThumbnailAd: (placement: string, thumbnailAdGravity: string, leftMargin: int, topMargin: int) => FreestarReactBridge.showThumbnailAd(placement, thumbnailAdGravity, leftMargin, topMargin),
   loadInterstitialAd: (placement: string) => FreestarReactBridge.loadInterstitialAd(placement),
   showInterstitialAd: (placement: string) => FreestarReactBridge.showInterstitialAd(placement),
   loadRewardAd: (placement: string) => FreestarReactBridge.loadRewardAd(placement),
@@ -74,6 +83,19 @@ module.exports = {
  },
   unsubscribeFromInterstitialCallbacks: () => {
     INTERSTITIAL_CALLBACKS.map((event) => {
+      emitter.removeAllListeners(event);
+    });
+  },
+ subscribeToThumbnailAdCallbacks: (callback: Function) => {
+   THUMBNAIL_AD_CALLBACKS.map((event) => {
+     emitter.removeAllListeners(event);
+     emitter.addListener(event, (body) => {
+       callback(event, body.placement, body);
+     });
+   });
+ },
+  unsubscribeFromThumbnailAdCallbacks: () => {
+    THUMBNAIL_AD_CALLBACKS.map((event) => {
       emitter.removeAllListeners(event);
     });
   },
