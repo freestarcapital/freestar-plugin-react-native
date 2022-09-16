@@ -69,5 +69,8 @@
   "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native",
   "author": {
     "name": "Freestar"
+  },
+  "dependencies": {
+    "@freestar/freestar-plugin-react-native": "github:freestarcapital/freestar-plugin-react-native"
   }
 }
