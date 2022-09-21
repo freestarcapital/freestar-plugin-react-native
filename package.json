@@ -71,6 +71,6 @@
     "name": "Freestar"
   },
   "dependencies": {
-    "@freestar/freestar-plugin-react-native": "github:freestarcapital/freestar-plugin-react-native"
+    "@freestar/freestar-plugin-react-native": "^1.2.7"
   }
 }
