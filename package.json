@@ -54,7 +54,7 @@
     "Ads",
     "ReactNative"
   ],
-  "version": "1.2.7",
+  "version": "1.2.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
@@ -71,6 +71,6 @@
     "name": "Freestar"
   },
   "dependencies": {
-    "@freestar/freestar-plugin-react-native": "^1.2.7"
+    "@freestar/freestar-plugin-react-native": "^1.2.8"
   }
 }
