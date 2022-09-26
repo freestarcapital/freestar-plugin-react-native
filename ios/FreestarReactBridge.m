@@ -9,13 +9,11 @@
 #import "FreestarReactBridge.h"
 @import FreestarAds;
 
-@interface FreestarReactBridge () <FreestarInterstitialDelegate, FreestarRewardedDelegate>
+@interface FreestarReactBridge () <FreestarInterstitialDelegate, FreestarRewardedDelegate, FreestarThumbnailAdDelegate>
 
+@property NSMutableDictionary<NSString*,FreestarThumbnailAd*> *thumbnailAds;
 @property NSMutableDictionary<NSString*,FreestarInterstitialAd*> *interstitialAds;
 @property NSMutableDictionary<NSString*,FreestarRewardedAd*> *rewardAds;
-
-//@property FreestarInterstitialAd *interstitial;
-//@property FreestarRewardedAd *reward;
 
 @end
 
@@ -38,6 +36,7 @@ RCT_EXPORT_MODULE();
 #pragma mark - init
 
 RCT_EXPORT_METHOD(initWithAdUnitID:(NSString *)apiKey) {
+    self.thumbnailAds = [NSMutableDictionary dictionary];
     self.interstitialAds = [NSMutableDictionary dictionary];
     self.rewardAds = [NSMutableDictionary dictionary];
     [Freestar initWithAppKey:apiKey];
@@ -56,7 +55,7 @@ RCT_EXPORT_METHOD(setDemographics:(NSInteger)age
     unsigned unitFlags = NSCalendarUnitDay | NSCalendarUnitMonth |  NSCalendarUnitYear;
     NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:birthday];
     [dem setBirthdayYear:comps.year month:comps.month day:comps.day];
-    
+
     [self processGender:gender.lowercaseString forDemographics:dem];
     [self processMaritalStatus:maritalStatus.lowercaseString forDemographics:dem];
     [dem setEthnicity:ethnicity];
@@ -105,8 +104,6 @@ RCT_EXPORT_METHOD(setLocation:(NSString *)dmaCode
 
 }
 
-
-
 #pragma mark - events
 
 - (NSArray<NSString *> *)supportedEvents{
@@ -120,16 +117,78 @@ RCT_EXPORT_METHOD(setLocation:(NSString *)dmaCode
              @"onRewardedShowFailed",
              @"onRewardedCompleted",
              @"onRewardedShown",
-             @"onRewardedDismissed"];
+             @"onRewardedDismissed",
+             @"onThumbnailAdLoaded",
+             @"onThumbnailAdClicked",
+             @"onThumbnailAdShown",
+             @"onThumbnailAdFailed",
+             @"onThumbnailAdDismissed"
+    ];
+}
+
+#pragma mark - launching Thumbnail
+
+RCT_EXPORT_METHOD(loadThumbnailAd:(NSString *)placement) {
+    FreestarThumbnailAd *ad = [[FreestarThumbnailAd alloc] initWithDelegate:self];
+
+    NSString *placementKey = placement ? placement : @"";
+
+    self.thumbnailAds[placementKey] = ad;
+
+    [ad loadPlacement:placement];
+}
+
+RCT_EXPORT_METHOD(showThumbnailAd:(NSString *)placement thumbnailAdGravity:(NSString *)gravity leftMargin:(int)xMargin topMargin:(int) yMargin) {
+
+    FreestarThumbnailAdGravity gravityValue = TopLeft;
+
+    if([gravity isEqualToString:@"TopLeft"]) {
+        gravityValue = TopLeft;
+    } else if([gravity isEqualToString:@"TopRight"]) {
+        gravityValue = TopRight;
+    } else if([gravity isEqualToString:@"BottomLeft"]) {
+        gravityValue = BottomLeft;
+    } else if([gravity isEqualToString:@"BottomRight"]) {
+        gravityValue = BottomRight;
+    }
+
+    [FreestarThumbnailAd setGravity:gravityValue];
+    [FreestarThumbnailAd setXMargin:(CGFloat)xMargin];
+    [FreestarThumbnailAd setYMargin:(CGFloat)yMargin];
+
+    NSString *placementKey = placement ? placement : @"";
+    [self.thumbnailAds[placementKey] show];
+}
+
+#pragma mark - FreestarThumbnailAdDelegate delegate
+
+-(void)onThumbnailLoaded:(FreestarThumbnailAd *)ad {
+    [self sendEventWithName:@"onThumbnailAdLoaded" body:@{@"placement": ad.placement}];
+}
+
+-(void)onThumbnailFailed:(FreestarThumbnailAd *)ad because:(FreestarNoAdReason)reason {
+    [self sendEventWithName:@"onThumbnailAdFailed" body:@{@"placement": ad.placement}];
+}
+
+-(void)onThumbnailShown:(FreestarThumbnailAd *)ad {
+    [self sendEventWithName:@"onThumbnailAdShown" body:@{@"placement": ad.placement}];
+}
+
+-(void)onThumbnailClicked:(FreestarThumbnailAd *)ad {
+    [self sendEventWithName:@"onThumbnailAdClicked" body:@{@"placement": ad.placement}];
+}
+
+- (void)onThumbnailDismissed:(FreestarThumbnailAd *)ad {
+    [self sendEventWithName:@"onThumbnailAdDismissed" body:@{@"placement": ad.placement}];
 }
 
 #pragma mark - launching interstitial
 
 RCT_EXPORT_METHOD(loadInterstitialAd:(NSString *)placement) {
     FreestarInterstitialAd *ad = [[FreestarInterstitialAd alloc] initWithDelegate:self];
-    
+
     NSString *placementKey = placement ? placement : @"";
-    
+
     self.interstitialAds[placementKey] = ad;
     [ad loadPlacement:placement];
 }
@@ -166,9 +225,9 @@ RCT_EXPORT_METHOD(showInterstitialAd:(NSString *)placement) {
 
 RCT_EXPORT_METHOD(loadRewardAd:(NSString *)placement) {
     FreestarRewardedAd *ad = [[FreestarRewardedAd alloc] initWithDelegate:self andReward:[FreestarReward blankReward]];
-    
+
     NSString *placementKey = placement ? placement : @"";
-    
+
     self.rewardAds[placementKey] = ad;
     [ad loadPlacement:placement];
 }
@@ -184,9 +243,9 @@ RCT_EXPORT_METHOD(showRewardAd:(NSString *)placement
   rew.rewardAmount = rewardAmount;
   rew.userID = userID;
   rew.secretKey = secretKey;
-    
+
     NSString *placementKey = placement ? placement : @"";
-    
+
     self.rewardAds[placementKey].reward = rew;
     [self.rewardAds[placementKey] showFrom:[self visibleViewController:[UIApplication sharedApplication].keyWindow.rootViewController]];
 }
@@ -233,19 +292,19 @@ RCT_EXPORT_METHOD(showRewardAd:(NSString *)placement
     {
         UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
-        
+
         return [self visibleViewController:lastViewController];
     }
     if ([rootViewController.presentedViewController isKindOfClass:[UITabBarController class]])
     {
         UITabBarController *tabBarController = (UITabBarController *)rootViewController.presentedViewController;
         UIViewController *selectedViewController = tabBarController.selectedViewController;
-        
+
         return [self visibleViewController:selectedViewController];
     }
-    
+
     UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
-    
+
     return [self visibleViewController:presentedViewController];
 }
 
@@ -282,6 +341,8 @@ RCT_EXPORT_METHOD(setAppInfo:(NSString *)appName
                   storeURL:(NSString *)storeURL
                   category:(NSString *)iabCategory
                   ) {
-    
+
 }
 @end
+
+
