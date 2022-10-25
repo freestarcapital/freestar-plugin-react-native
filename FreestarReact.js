@@ -1,4 +1,4 @@
-import { requireNativeComponent, ViewPropTypes } from 'react-native';
+import { requireNativeComponent } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
