@@ -1,4 +1,4 @@
-import { requireNativeComponent, ViewPropTypes } from 'react-native';
+import { requireNativeComponent } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
@@ -20,8 +20,15 @@ const REWARD_CALLBACKS_NONFINISHED = [
   "onRewardedShown",
   "onRewardedDismissed"];
 const REWARD_CALLBACK_FINISHED = "onRewardedCompleted";
+const THUMBNAIL_AD_CALLBACKS = [
+  "onThumbnailAdLoaded",
+  "onThumbnailAdClicked",
+  "onThumbnailAdShown",
+  "onThumbnailAdFailed",
+  "onThumbnailAdDismissed"];
 
 module.exports = {
+  enablePartnerChooserForTesting: (enable: boolean) => FreestarReactBridge.enablePartnerChooserForTesting(enable),
   initWithAdUnitID: (apiKey: string) => FreestarReactBridge.initWithAdUnitID(apiKey),
   setDemographics: (
     age: int,
@@ -45,9 +52,9 @@ module.exports = {
     storeURL: string,
     category: string
   ) => FreestarReactBridge.setAppInfo(appName,publisherName,appDomain,publisherDomain,storeURL,category),
-  subjectToGDPR: (gdprApplies: boolean, gdprConsentString: string) =>
-    FreestarReactBridge.subjectToGDPR(gdprApplies,gdprConsentString),
   setCoppaStatus: (coppa: boolean) => FreestarReactBridge.setCoppaStatus(coppa),
+  loadThumbnailAd: (placement: string) => FreestarReactBridge.loadThumbnailAd(placement),
+  showThumbnailAd: (placement: string, thumbnailAdGravity: string, leftMargin: int, topMargin: int) => FreestarReactBridge.showThumbnailAd(placement, thumbnailAdGravity, leftMargin, topMargin),
   loadInterstitialAd: (placement: string) => FreestarReactBridge.loadInterstitialAd(placement),
   showInterstitialAd: (placement: string) => FreestarReactBridge.showInterstitialAd(placement),
   loadRewardAd: (placement: string) => FreestarReactBridge.loadRewardAd(placement),
@@ -66,8 +73,29 @@ module.exports = {
       });
     });
   },
+ subscribeToInterstitialCallbacks2: (callback: Function) => {
+   INTERSTITIAL_CALLBACKS.map((event) => {
+     emitter.removeAllListeners(event);
+     emitter.addListener(event, (body) => {
+       callback(event, body.placement, body);
+     });
+   });
+ },
   unsubscribeFromInterstitialCallbacks: () => {
     INTERSTITIAL_CALLBACKS.map((event) => {
+      emitter.removeAllListeners(event);
+    });
+  },
+ subscribeToThumbnailAdCallbacks: (callback: Function) => {
+   THUMBNAIL_AD_CALLBACKS.map((event) => {
+     emitter.removeAllListeners(event);
+     emitter.addListener(event, (body) => {
+       callback(event, body.placement, body);
+     });
+   });
+ },
+  unsubscribeFromThumbnailAdCallbacks: () => {
+    THUMBNAIL_AD_CALLBACKS.map((event) => {
       emitter.removeAllListeners(event);
     });
   },
@@ -81,6 +109,18 @@ module.exports = {
     emitter.removeAllListeners(REWARD_CALLBACK_FINISHED);
     emitter.addListener(REWARD_CALLBACK_FINISHED, (body) => {
       callback(REWARD_CALLBACK_FINISHED, body.placement, body.rewardName, body.rewardAmount)
+    });
+  },
+  subscribeToRewardCallbacks2: (callback: Function) => {
+    REWARD_CALLBACKS_NONFINISHED.map((event) => {
+      emitter.removeAllListeners(event);
+      emitter.addListener(event, (body) => {
+        callback(event, body.placement, body.rewardName, body.rewardAmount, body);
+      });
+    });
+    emitter.removeAllListeners(REWARD_CALLBACK_FINISHED);
+    emitter.addListener(REWARD_CALLBACK_FINISHED, (body) => {
+      callback(REWARD_CALLBACK_FINISHED, body.placement, body.rewardName, body.rewardAmount, body)
     });
   },
   unsubscribeFromRewardCallbacks: () => {

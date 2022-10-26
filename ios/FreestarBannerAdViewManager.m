@@ -97,6 +97,7 @@ RCT_EXPORT_VIEW_PROPERTY(onBannerAdLoaded, RCTBubblingEventBlock);
 
 - (UIView *)view {
     self.ad = [[FreestarBannerAd alloc] initWithDelegate:self andSize:FreestarBanner300x250];
+    self.ad.fixedSize = true;
     return self.ad;
 }
 

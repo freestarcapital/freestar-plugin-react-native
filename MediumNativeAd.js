@@ -1,16 +1,12 @@
 
-import { requireNativeComponent, ViewPropTypes } from 'react-native';
+import { requireNativeComponent } from 'react-native';
 import PropTypes from 'prop-types';
 
-var viewProps = {
+var props = {
    name: 'MediumNativeAd',
    propTypes: {
-      ...ViewPropTypes,
-      requestOptions: PropTypes.object.require,
-      onNativeAdLoaded: PropTypes.func,
-      onNativeAdFailedToLoad: PropTypes.func,
-      onNativeAdClicked: PropTypes.func,
+      requestOptions: PropTypes.object.require
    }
 
 }
-module.exports = requireNativeComponent('MediumNativeAd', viewProps);
+module.exports = requireNativeComponent('MediumNativeAd', props);
