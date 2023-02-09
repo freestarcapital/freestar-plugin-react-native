@@ -18,7 +18,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/freestar-plugin-react/-/freestar-plugin-react-1.2.9.tgz",
+  "_resolved": "https://registry.npmjs.org/freestar-plugin-react/-/freestar-plugin-react-1.3.0.tgz",
   "_shasum": "7e4600ee435924c5c6c62413a5822d98357a430b",
   "_spec": "freestar-plugin-react-native",
   "deprecated": false,
@@ -54,7 +54,7 @@
     "Ads",
     "ReactNative"
   ],
-  "version": "1.2.9",
+  "version": "1.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
@@ -71,6 +71,6 @@
     "name": "Freestar"
   },
   "dependencies": {
-    "@freestar/freestar-plugin-react-native": "^1.2.9"
+    "@freestar/freestar-plugin-react-native": "^1.3.0"
   }
 }

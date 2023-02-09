@@ -26,8 +26,10 @@ const THUMBNAIL_AD_CALLBACKS = [
   "onThumbnailAdShown",
   "onThumbnailAdFailed",
   "onThumbnailAdDismissed"];
+const ON_PAID_EVENT = "onPaidEvent";
 
 module.exports = {
+  setUserId: (userId: string) => FreestarReactBridge.setUserId(userId),
   enablePartnerChooserForTesting: (enable: boolean) => FreestarReactBridge.enablePartnerChooserForTesting(enable),
   initWithAdUnitID: (apiKey: string) => FreestarReactBridge.initWithAdUnitID(apiKey),
   setDemographics: (
@@ -65,6 +67,13 @@ module.exports = {
     userID: string,
     secretKey: string
   ) => FreestarReactBridge.showRewardAd(placement, rewardName,rewardAmount,userID,secretKey),
+
+  subscribeToOnPaidEvents: (callback: Function) => {
+    emitter.removeAllListeners(ON_PAID_EVENT);
+    emitter.addListener(ON_PAID_EVENT, (paidEvent) => {
+      callback(ON_PAID_EVENT, paidEvent);
+    });
+  },
   subscribeToInterstitialCallbacks: (callback: Function) => {
     INTERSTITIAL_CALLBACKS.map((event) => {
       emitter.removeAllListeners(event);
