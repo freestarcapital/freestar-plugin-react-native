@@ -74,6 +74,9 @@ module.exports = {
       callback(ON_PAID_EVENT, paidEvent);
     });
   },
+  unsubscribeFromOnPaidEvents: () => {
+    emitter.removeAllListeners(ON_PAID_EVENT);
+  },
   subscribeToInterstitialCallbacks: (callback: Function) => {
     INTERSTITIAL_CALLBACKS.map((event) => {
       emitter.removeAllListeners(event);
