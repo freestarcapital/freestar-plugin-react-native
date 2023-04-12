@@ -2,3 +2,5 @@ package-lock.json
 .idea
 node_modules/
 
+ios/FreestarPod.xcodeproj/xcuserdata
+ios/FreestarPod.xcodeproj/project.xcworkspace/xcuserdata

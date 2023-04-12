@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://gitlab.com/freestarcapital/freestar-plugin-react-native.git", :tag => "v#{s.version}" }
   s.source_files  = "ios/**/*.{h,m}"
 
-  s.dependency 'FreestarAds', '~> 5.17.0'
+  s.dependency 'FreestarAds', '~> 5.19.0'
   s.dependency 'React'
 end
