@@ -2,7 +2,7 @@ import { requireNativeComponent } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
-import type EmitterSubscription from 'EmitterSubscription';
+import type EmitterSubscription from 'react-native';
 
 const FreestarReactBridge = NativeModules.FreestarReactBridge;
 const emitter = new NativeEventEmitter(FreestarReactBridge);
