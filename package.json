@@ -1,32 +1,7 @@
 {
-  "_from": "freestar-plugin-react-native",
-  "_inBundle": false,
-  "_integrity": "sha512-0NPp+ZQNbY5NcQitoXGn+BdxzNgJsTelRCbDO8pFcL8Q/7CErZkSxKVffvk2YdWrNf+jKc4qtzZQcT+bXYfVdQ==",
-  "_location": "/freestar-plugin-react-native",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "freestar-plugin-react-native",
-    "name": "freestar-plugin-react-native",
-    "escapedName": "freestar-plugin-react-native",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/freestar-plugin-react/-/freestar-plugin-react-1.3.3.tgz",
-  "_shasum": "7e4600ee435924c5c6c62413a5822d98357a430b",
-  "_spec": "freestar-plugin-react-native",
-  "deprecated": false,
   "devDependencies": {
-    "np": "^6.5.0",
     "react-native": "^0.62.2"
   },
-  "dummy": 4,
   "files": [
     "ios",
     "FreestarReact.js",
@@ -48,19 +23,15 @@
   "main": "FreestarReact.js",
   "name": "@freestar/freestar-plugin-react-native",
   "description": "A plugin to enable Freestar ads to be displayed in ReactNative apps",
-  "private": false,
   "keywords": [
     "Freestar",
     "Ads",
-    "ReactNative"
+    "Mediation"
   ],
-  "version": "1.3.3",
+  "version": "1.3.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/freestarcapital/freestar-plugin-react-native"
-  },
-  "bugs": {
-    "url": "https://github.com/freestarcapital/freestar-plugin-react-native/issues"
   },
   "scripts": {
     "test": "echo \"No test specified\""
@@ -69,8 +40,5 @@
   "homepage": "https://github.com/freestarcapital/freestar-plugin-react-native",
   "author": {
     "name": "Freestar"
-  },
-  "dependencies": {
-    "@freestar/freestar-plugin-react-native": "^1.3.3"
   }
 }
