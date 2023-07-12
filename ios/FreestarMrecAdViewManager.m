@@ -15,6 +15,7 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
 @interface FreestarMrecAdViewManager () <FreestarBannerAdDelegate>
 
 @property FreestarBannerAd *ad;
+@property FreestarBannerAdSize requestedSize;
 @property RCTBubblingEventBlock loadedCallback;
 @property RCTBubblingEventBlock loadFailedCallback;
 @property RCTBubblingEventBlock clickedCallback;
@@ -22,6 +23,8 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
 @end
 
 @implementation FreestarMrecAdViewManager
+
+RCT_EXPORT_MODULE(MrecBannerAd);
 
 RCT_EXPORT_VIEW_PROPERTY(requestOptions, NSDictionary);
 
@@ -33,59 +36,43 @@ RCT_EXPORT_VIEW_PROPERTY(onBannerAdLoaded, RCTBubblingEventBlock);
 }
 
 - (dispatch_queue_t)methodQueue {
-  return dispatch_get_main_queue();
+    return dispatch_get_main_queue();
 }
 
 - (void)sendEvent:(RCTBubblingEventBlock)callback type:(NSString *)type payload:(NSDictionary *_Nullable)payload {
-  if (!callback) {
-    return;
-  }
-
-  NSMutableDictionary *event = [@{
-      @"type": type,
-  } mutableCopy];
-
-  if (payload != nil) {
-    [event addEntriesFromDictionary:payload];
-  }
-
-  callback(event);
+    if (!callback) {
+        return;
+    }
+    
+    NSMutableDictionary *event = [@{
+        @"type": type,
+    } mutableCopy];
+    
+    if (payload != nil) {
+        [event addEntriesFromDictionary:payload];
+    }
+    
+    callback(event);
 }
 
 #pragma mark - FreestarBannerAdDelegate
 
--(void)freestarBannerLoaded:(FreestarBannerAd *)ad {
+- (void)freestarBannerLoaded:(FreestarBannerAd *)ad {
     [self sendEvent:self.loadedCallback type:EVENT_AD_LOADED payload:@{}];
 }
 
--(void)freestarBannerFailed:(FreestarBannerAd *)ad because:(FreestarNoAdReason)reason {
+- (void)freestarBannerFailed:(FreestarBannerAd *)ad because:(FreestarNoAdReason)reason {
     [self sendEvent:self.loadFailedCallback type:EVENT_AD_FAILED_TO_LOAD payload:@{
         @"errorCode" : @(reason)
     }];
 }
 
--(void)freestarBannerClicked:(FreestarBannerAd *)ad {
+- (void)freestarBannerClicked:(FreestarBannerAd *)ad {
     [self sendEvent:self.clickedCallback type:EVENT_AD_CLICKED payload:@{}];
 }
 
--(void)freestarBannerClosed:(FreestarBannerAd *)ad {}
--(void)freestarBannerShown:(FreestarBannerAd *)ad {}
+- (void)freestarBannerClosed:(FreestarBannerAd *)ad {}
+- (void)freestarBannerShown:(FreestarBannerAd *)ad {}
 
 
-@end
-
-@implementation FreestarMrecAdViewManager1
-RCT_EXPORT_MODULE(MrecBannerAd);
-@end
-
-@implementation FreestarMrecAdViewManager2
-RCT_EXPORT_MODULE(MrecBannerAd2);
-@end
-
-@implementation FreestarMrecAdViewManager3
-RCT_EXPORT_MODULE(MrecBannerAd3);
-@end
-
-@implementation FreestarMrecAdViewManager4
-RCT_EXPORT_MODULE(MrecBannerAd4);
 @end

@@ -15,6 +15,7 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
 @interface FreestarBannerAdViewManager () <FreestarBannerAdDelegate>
 
 @property FreestarBannerAd *ad;
+@property FreestarBannerAdSize requestedSize;
 @property RCTBubblingEventBlock loadedCallback;
 @property RCTBubblingEventBlock loadFailedCallback;
 @property RCTBubblingEventBlock clickedCallback;
@@ -23,15 +24,16 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
 
 @implementation FreestarBannerAd (ReactBridge)
 
--(void)setRequestOptions:(NSDictionary *)options {
+- (void)setRequestOptions:(NSDictionary *)options {
     NSString *sizeKey = options[@"size"];
-    if(sizeKey && ![[sizeKey uppercaseString] isEqualToString:@"MREC"]) {
+    if (sizeKey && ![[sizeKey uppercaseString] isEqualToString:@"MREC"]) {
         if([[sizeKey lowercaseString] isEqualToString:@"banner"]) {
-            self.size = FreestarBanner320x50;
+            [((FreestarBannerAdViewManager *)self.delegate) setRequestedSize:FreestarBanner320x50];
         } else if([[sizeKey lowercaseString] isEqualToString:@"leaderboard"]) {
-            self.size = FreestarBanner728x90;
+            [((FreestarBannerAdViewManager *)self.delegate) setRequestedSize:FreestarBanner728x90];
         }
-        [self resetToSize];
+    } else if ([[sizeKey uppercaseString] isEqualToString:@"MREC"]) {
+        [((FreestarBannerAdViewManager *)self.delegate) setRequestedSize:FreestarBanner300x250];
     }
     
     NSDictionary *targetingParams = options[@"targetingParams"];
@@ -46,39 +48,15 @@ static NSString* EVENT_AD_CLICKED = @"onBannerAdClicked";
     [self loadPlacement:placement];
 }
 
--(void)resetToSize {
-    CGRect newFrame;
-    switch(self.size){
-        case FreestarBanner320x50:
-            newFrame = CGRectMake(0, 0, 320, 50);
-            break;
-        case FreestarBanner728x90:
-            newFrame = CGRectMake(0, 0, 728, 90);
-            break;
-        case FreestarBanner300x250:
-            newFrame = CGRectMake(0, 0, 300, 250);
-            break;
-        case FreestarBanner320x480:
-            return;
-            //newFrame = self.frame; //no banners of this size
-    }
-    
-    CGPoint oldCenter = self.center;
-    self.frame = newFrame;
-    self.center = oldCenter;
-        
-    [self setValue:@(self.size) forKeyPath:@"ad.size"];
-}
-
--(void)setOnBannerAdLoaded:(RCTBubblingEventBlock)loadedBlock {
+- (void)setOnBannerAdLoaded:(RCTBubblingEventBlock)loadedBlock {
     ((FreestarBannerAdViewManager *)self.delegate).loadedCallback = loadedBlock;
 }
 
--(void)setOnBannerAdFailedToLoad:(RCTBubblingEventBlock)failedBlock {
+- (void)setOnBannerAdFailedToLoad:(RCTBubblingEventBlock)failedBlock {
     ((FreestarBannerAdViewManager *)self.delegate).loadFailedCallback = failedBlock;
 }
 
--(void)setOnBannerAdClicked:(RCTBubblingEventBlock)clickedBlock {
+- (void)setOnBannerAdClicked:(RCTBubblingEventBlock)clickedBlock {
     ((FreestarBannerAdViewManager *)self.delegate).clickedCallback = clickedBlock;
 }
 
@@ -96,7 +74,7 @@ RCT_EXPORT_VIEW_PROPERTY(onBannerAdLoaded, RCTBubblingEventBlock);
 
 
 - (UIView *)view {
-    self.ad = [[FreestarBannerAd alloc] initWithDelegate:self andSize:FreestarBanner300x250];
+    self.ad = [[FreestarBannerAd alloc] initWithDelegate:self andSize:FreestarBanner320x50];
     self.ad.fixedSize = true;
     return self.ad;
 }
@@ -125,26 +103,21 @@ RCT_EXPORT_VIEW_PROPERTY(onBannerAdLoaded, RCTBubblingEventBlock);
 
 
 
--(void)freestarBannerLoaded:(FreestarBannerAd *)ad {
+- (void)freestarBannerLoaded:(FreestarBannerAd *)ad {
     [self sendEvent:self.loadedCallback type:EVENT_AD_LOADED payload:@{}];
 }
 
--(void)freestarBannerFailed:(FreestarBannerAd *)ad because:(FreestarNoAdReason)reason {
+- (void)freestarBannerFailed:(FreestarBannerAd *)ad because:(FreestarNoAdReason)reason {
     [self sendEvent:self.loadFailedCallback type:EVENT_AD_FAILED_TO_LOAD payload:@{
         @"errorCode" : @(reason)
     }];
 }
 
--(void)freestarBannerShown:(FreestarBannerAd *)ad {
-    
-}
-
--(void)freestarBannerClicked:(FreestarBannerAd *)ad {
+- (void)freestarBannerClicked:(FreestarBannerAd *)ad {
     [self sendEvent:self.clickedCallback type:EVENT_AD_CLICKED payload:@{}];
 }
 
--(void)freestarBannerClosed:(FreestarBannerAd *)ad {
-    
-}
+- (void)freestarBannerClosed:(FreestarBannerAd *)ad {}
+- (void)freestarBannerShown:(FreestarBannerAd *)ad {}
 
 @end

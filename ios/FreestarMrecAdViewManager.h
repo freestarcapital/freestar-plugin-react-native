@@ -13,16 +13,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface FreestarMrecAdViewManager1 : FreestarMrecAdViewManager
-@end
-
-@interface FreestarMrecAdViewManager2 : FreestarMrecAdViewManager
-@end
-
-@interface FreestarMrecAdViewManager3 : FreestarMrecAdViewManager
-@end
-
-@interface FreestarMrecAdViewManager4 : FreestarMrecAdViewManager
-@end
-
 NS_ASSUME_NONNULL_END
